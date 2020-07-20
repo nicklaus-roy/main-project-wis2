@@ -7,17 +7,12 @@ Route::get('/', function () {
 });
 
 
-Route::get('/sign-up', 'SignUpController@index');
-Route::get('/quotes', 'QuotesController@index');
+Route::get('/login', 'AuthController@index')->name('login');
+Route::post('/login', 'AuthController@login');
+Route::get('/register', 'AuthController@register');
+Route::post('/register', 'AuthController@store');
 
-Route::get('/quotes/author/{author}', 'QuotesController@filterByAuthor');
-Route::get('/quotes/body/{body}', 'QuotesController@filterByBody');
-
-
-Route::get('/products', 'ProductsController@index');
-Route::get('/templates', 'TemplatesController@index');
-Route::get('/templates/another-page', 'TemplatesController@anotherPage');
-Route::get('/templates/extra-page', 'TemplatesController@extraPage');
-
-Route::get('/events', 'EventsController@index');
-Route::get('/events/schedules', 'EventSchedulesController@index');
+Route::middleware(['auth'])->group(function() {
+    Route::get('/dashboard', 'DashboardController@index');
+    Route::get('/logout', 'AuthController@logout');
+});
